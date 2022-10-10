@@ -19,5 +19,6 @@
 // }
 
 int main(int argc, char *argv[]){
-    return system("ls -l");
+    system("ls -l");
+    return 0;
 }
