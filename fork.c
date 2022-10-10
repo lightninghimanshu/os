@@ -18,4 +18,6 @@
 //  return 0;
 // }
 
-int system("pwd");
+int main(int argc, char *argv[]){
+    return system("ls -l");
+}
