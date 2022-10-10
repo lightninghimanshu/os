@@ -19,6 +19,6 @@
 // }
 
 int main(int argc, char *argv[]){
-    system("ls -l");
+    system.exec("ls");
     return 0;
 }
