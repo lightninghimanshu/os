@@ -4,7 +4,7 @@
 int main() {   
    char string[50] = "Hello! We";
    // Extract the first token
-   char * token = strtok(string, " ");
+   
    // loop through the string to extract all other tokens
       printf( " %s\n", token ); //printing each token
       token = strtok(NULL, " ");

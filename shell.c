@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <sys/types.h>
 
 
 int MAX_CHAR = 100;
@@ -102,6 +104,9 @@ int main(int argc, char *argv[])
 	char cmdcd[]="cd";
 	char cmdecho[]="echo";
 	char cmdpwd[]="pwd";
+
+	char cmdls[]="ls";
+
 	while(mainflag==1){
 		printf("$");
 		fgets(command, MAX_CHAR, stdin);
@@ -122,7 +127,32 @@ int main(int argc, char *argv[])
 			pwd_cmd(token);
 		}
 		else{
-			system(command);
+			int flag=0;
+			char *arg;
+			char *arg2;
+			char *binaryPath = "./scandir";
+			if (strcmp(token,cmdls)==0){
+				binaryPath = "./scandir";
+				token = strtok(NULL, " ");
+				arg=token;
+				token = strtok(NULL, " ");
+				arg2=token;
+				flag=1;
+			}
+			
+			if (flag==1){
+				int rc = fork();
+				if (rc < 0) { 
+					exit(1);
+				} else if (rc == 0) { 
+					char *args[] = {binaryPath, arg, arg2, NULL};
+					execvp(binaryPath, args);   
+					printf("this shouldn’t print out");
+				} else { 
+					int wc = wait(NULL);
+					flag=0;
+				}
+			}
 		}
 
 	}
