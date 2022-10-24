@@ -1,20 +1,125 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+
+
 int MAX_CHAR = 100;
+
+void cdP_cmd(){
+	char * token = strtok(NULL, " ");
+	chdir(token);
+}
+
+void cdL_cmd(){
+	char * token = strtok(NULL, " ");
+	chdir(token);
+}
+
+void cd_cmd(){
+	char * token = strtok(NULL, " ");
+	if (token == NULL){
+		return;
+	}
+	if (strcmp(token,"-P")==0){
+		cdP_cmd();
+	}
+	else if(strcmp(token,"-L")==0){
+		cdP_cmd();
+	}
+	else{
+		char * token = strtok(NULL, " ");
+		chdir(token);
+	}
+}
+
+void echoN_cmd(){
+	char * token = strtok(NULL, " ");
+	printf("%s",token);
+}
+
+void echoHelp_cmd(){
+	printf("%s\n","Echo help");
+}
+
+void echo_cmd(){
+	char * token = strtok(NULL, " ");
+	if (token == NULL){
+		return;
+	}
+	if (strcmp(token,"-n")==0){
+		echoN_cmd();
+	}
+	else if(strcmp(token,"--help")==0){
+		echoHelp_cmd();
+	}
+	else {
+		printf("%s\n",token);
+
+	}
+	
+}
+
+void pwdP_cmd(){
+	char s[100];
+	getcwd(s,100);
+	printf("P%s\n",s);
+}
+
+void pwdL_cmd(){
+	char s[100];
+	realpath(".", s);
+	printf("L%s\n",s);
+}
+
+void pwd_cmd(){
+	char * token = strtok(NULL, " ");
+	if (token == NULL){
+		char s[100];
+		getcwd(s,100);
+		printf("%s\n",s);
+		return;
+	}
+	if (strcmp(token,"-P")==0){
+		pwdP_cmd();
+	}
+	else if(strcmp(token,"-L")==0){
+		pwdL_cmd();
+	}
+	else{
+		printf("Not Supported");
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	int mainflag=1;
+	system("clear");
 	printf("Welcome to the shell\n");
 	char command[MAX_CHAR];
-	char exit[]="exit\n";
+	char * token;
+	char cmdexit[]="exit";
+	char cmdcd[]="cd";
+	char cmdecho[]="echo";
+	char cmdpwd[]="pwd";
 	while(mainflag==1){
 		printf("$");
 		fgets(command, MAX_CHAR, stdin);
-		printf("%d\n",strlen(command));
-		if(strcmp(command,exit)==0){
+		// printf("!");
+		command[strcspn(command, "\n")] = 0;
+		char * token = strtok(command, " ");
+		if(strcmp(token,cmdexit)==0){
 			mainflag=0;
 			printf("bye");
+		}
+		if(strcmp(token,cmdcd)==0){
+			cd_cmd(token);
+		}
+		if(strcmp(token,cmdecho)==0){
+			echo_cmd(token);
+		}
+		if(strcmp(token,cmdpwd)==0){
+			pwd_cmd(token);
 		}
 		else{
 			system(command);
