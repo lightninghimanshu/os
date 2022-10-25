@@ -5,7 +5,7 @@
 #include <string.h>
 
 // Driver code
-int main()
+int catn()
 {
 	FILE* ptr;
 	char ch;
@@ -30,9 +30,39 @@ int main()
         }else{
         printf("%c", ch);
         }
-        
-        
+		// Checking if character is not EOF.
+		// If it is EOF stop eading.
+	} while (ch != EOF);
 
+	// Closing the file
+	fclose(ptr);
+	return 0;
+}
+
+
+int catE()
+{
+	FILE* ptr;
+	char ch;
+
+	// Opening file in reading mode
+	ptr = fopen("scandir.c", "r");
+
+	if (NULL == ptr) {
+		printf("file can't be opened \n");
+	}
+
+	printf("content of this file are \n");
+    char *c = "\n"  ;
+	// Printing what is written in file
+	// character by character using loop.
+	do {
+		ch = fgetc(ptr);
+		if (ch=='\n'){
+            printf("%c%c",'$',ch);
+        }else{
+        printf("%c", ch);
+        }
 		// Checking if character is not EOF.
 		// If it is EOF stop eading.
 	} while (ch != EOF);

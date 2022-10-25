@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
 	char cmdpwd[]="pwd";
 
 	char cmdls[]="ls";
+	char cmdcat[]="cat";
 
 	while(mainflag==1){
 		printf("$");
