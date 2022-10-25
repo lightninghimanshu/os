@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
+#include <pthread.h>
 
 
 int MAX_CHAR = 100;
@@ -93,12 +94,18 @@ void pwd_cmd(){
 	}
 }
 
+void *sys_call(void *arg){
+	char * final = (char *) arg;
+	system(final);
+}
 int main(int argc, char *argv[])
 {
 	int mainflag=1;
 	// system("clear");
+	pthread_t p;
 	printf("Welcome to the shell\n");
 	char command[MAX_CHAR];
+	char threadcmd[MAX_CHAR];
 	char * original = malloc(sizeof(char)*MAX_CHAR);
 	char * token;
 	char cmdexit[]="exit";
@@ -112,7 +119,9 @@ int main(int argc, char *argv[])
 	char cmdmkdir[]="mkdir";
 	
 	char cmdclear[]="clear";
+	char cmdt[]="&t";
 
+	char blank[]=" ";
 	while(mainflag==1){
 		printf("$");
 		fgets(command, MAX_CHAR, stdin);
@@ -137,6 +146,7 @@ int main(int argc, char *argv[])
 			int flag=0;
 			char *arg = NULL;
 			char *arg2 = NULL;
+			char *arg3 = NULL;
 			char *binaryPath = "./scandir";
 			if (strcmp(token,cmdls)==0){
 				binaryPath = "./scandir";
@@ -145,6 +155,9 @@ int main(int argc, char *argv[])
 				token = strtok(NULL, " ");
 				arg2=token;
 				flag=1;
+				if (strcmp(arg,cmdt)==0){
+					flag=2;
+				}
 				
 			}
 			else if (strcmp(token,cmdcat)==0){
@@ -154,20 +167,32 @@ int main(int argc, char *argv[])
 				token = strtok(NULL, " ");
 				arg2=token;
 				flag=1;
+				if (strcmp(arg,cmdt)==0){
+					flag=2;
+				}
 			}
 			else if (strcmp(token,cmdrm)==0){
 				binaryPath = "./remove";
 				arg=original;
+				token = strtok(NULL, " ");
 				flag=1;
+				if (strcmp(token,cmdt)==0){
+					flag=4;
+				}
 			}
 			else if (strcmp(token,cmdmkdir)==0){
 				binaryPath = "./mkdir";
+				token = strtok(NULL, " ");
 				arg=original;
 				flag=1;
+				if (strcmp(token,cmdt)==0){
+					flag=4;
+				}
 			}
 			else if (strcmp(token,cmdclear)==0){
 				system("clear");
-			}			if (flag==1){
+			}			
+			if (flag==1){
 				int rc = fork();
 				if (rc < 0) { 
 					exit(1);
@@ -180,6 +205,31 @@ int main(int argc, char *argv[])
 					flag=0;
 				}
 			}
+			if (flag==2){
+				strcpy(threadcmd,binaryPath);
+				strcat(threadcmd,blank);
+				if (arg2!=NULL){
+					strcat(threadcmd,arg2);
+					token = strtok(NULL, " ");
+					if (token!=NULL){
+						strcat(threadcmd," ");
+						strcat(threadcmd,token);
+					}
+				}
+    			pthread_create(&p, NULL, sys_call, &threadcmd);
+    			pthread_join(p, NULL);
+			}
+			if (flag==4){
+				strcpy(threadcmd,binaryPath);
+				strcat(threadcmd," \"mkdir");
+				token = strtok(arg, "&t");
+				token = strtok(NULL, "&t");
+				strcat(threadcmd,token);
+				strcat(threadcmd,"\"");
+    			pthread_create(&p, NULL, sys_call, &threadcmd);
+    			pthread_join(p, NULL);
+			}
+
 			
 		}
 
