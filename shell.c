@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
 	system("clear");
 	printf("Welcome to the shell\n");
 	char command[MAX_CHAR];
+	char original[MAX_CHAR];
 	char * token;
 	char cmdexit[]="exit";
 	char cmdcd[]="cd";
@@ -107,12 +108,17 @@ int main(int argc, char *argv[])
 
 	char cmdls[]="ls";
 	char cmdcat[]="cat";
+	char cmdrm[]="rm";
+	char cmdmkdir[]="mkdir";
+	
+	char cmdclear[]="clear";
 
 	while(mainflag==1){
 		printf("$");
 		fgets(command, MAX_CHAR, stdin);
 		// printf("!");
 		command[strcspn(command, "\n")] = 0;
+		strcpy(original,command);
 		char * token = strtok(command, " ");
 		if(strcmp(token,cmdexit)==0){
 			mainflag=0;
@@ -129,8 +135,8 @@ int main(int argc, char *argv[])
 		}
 		else{
 			int flag=0;
-			char *arg;
-			char *arg2;
+			char *arg = NULL;
+			char *arg2 = NULL;
 			char *binaryPath = "./scandir";
 			if (strcmp(token,cmdls)==0){
 				binaryPath = "./scandir";
@@ -140,7 +146,24 @@ int main(int argc, char *argv[])
 				arg2=token;
 				flag=1;
 			}
-			
+			else if (strcmp(token,cmdcat)==0){
+				binaryPath="./cat";
+				token = strtok(NULL, " ");
+				arg=token;
+				token = strtok(NULL, " ");
+				arg2=token;
+				flag=1;
+			}
+			else if (strcmp(token,cmdrm)==0){
+				binaryPath = "./remove";
+				arg=original;
+				flag=1;
+			}
+			else if (strcmp(token,cmdmkdir)==0){
+				binaryPath = "./mkdir";
+				arg=original;
+				flag=1;
+			}
 			if (flag==1){
 				int rc = fork();
 				if (rc < 0) { 
@@ -153,6 +176,9 @@ int main(int argc, char *argv[])
 					int wc = wait(NULL);
 					flag=0;
 				}
+			}
+			if (strcmp(token,cmdclear)==0){
+				system("clear");
 			}
 		}
 
