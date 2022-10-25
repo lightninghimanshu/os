@@ -21,7 +21,7 @@ void cdL_cmd(){
 void cd_cmd(){
 	char * token = strtok(NULL, " ");
 	if (token == NULL){
-		return;
+	return;
 	}
 	if (strcmp(token,"-P")==0){
 		cdP_cmd();
@@ -96,10 +96,10 @@ void pwd_cmd(){
 int main(int argc, char *argv[])
 {
 	int mainflag=1;
-	system("clear");
+	// system("clear");
 	printf("Welcome to the shell\n");
 	char command[MAX_CHAR];
-	char original[MAX_CHAR];
+	char * original = malloc(sizeof(char)*MAX_CHAR);
 	char * token;
 	char cmdexit[]="exit";
 	char cmdcd[]="cd";
@@ -145,6 +145,7 @@ int main(int argc, char *argv[])
 				token = strtok(NULL, " ");
 				arg2=token;
 				flag=1;
+				
 			}
 			else if (strcmp(token,cmdcat)==0){
 				binaryPath="./cat";
@@ -164,22 +165,22 @@ int main(int argc, char *argv[])
 				arg=original;
 				flag=1;
 			}
-			if (flag==1){
+			else if (strcmp(token,cmdclear)==0){
+				system("clear");
+			}			if (flag==1){
 				int rc = fork();
 				if (rc < 0) { 
 					exit(1);
 				} else if (rc == 0) { 
 					char *args[] = {binaryPath, arg, arg2, NULL};
-					execvp(binaryPath, args);   
+					execve(binaryPath, args, NULL);   
 					printf("this shouldn’t print out");
 				} else { 
 					int wc = wait(NULL);
 					flag=0;
 				}
 			}
-			if (strcmp(token,cmdclear)==0){
-				system("clear");
-			}
+			
 		}
 
 	}

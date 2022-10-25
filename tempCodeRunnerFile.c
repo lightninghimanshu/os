@@ -1,1 +1,3 @@
-execvp
+if (token == NULL){
+	return;
+	}
