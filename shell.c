@@ -231,7 +231,7 @@ int main(int argc, char *argv[])
 				} else if (rc == 0) { 
 					char *args[] = {binaryPath, arg, arg2, NULL};
 					execve(binaryPath, args, NULL);   
-					printf("this shouldn’t print out");
+					printf("Invalid Location/Operation\n");
 				} else { 
 					int wc = wait(NULL);
 					flag=0;
