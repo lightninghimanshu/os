@@ -78,7 +78,6 @@ void lsd(char arg[]){
 
 
 int main(int argc, char *argv[]){
-    // printf("%s %s\n",argv[1], argv[2]);
     if (argv[1]==NULL){
         ls(NULL);
     }
@@ -88,6 +87,9 @@ int main(int argc, char *argv[]){
     else if (strcmp(argv[1],"-d")==0){
         lsd(argv[2]);
     }
+    else if (argv[1][0]=='-'){
+		printf("Wrong Flag\n");
+	}    
     else{
         ls(argv[1]);
     }

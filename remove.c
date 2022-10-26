@@ -6,34 +6,59 @@ void rmi(char arg[]){
     printf("Do you want to delete %s?\n",arg);
     fgets(c,10,stdin);
     if (strcmp(c,"yes\n")==0){
-        remove(arg);
+        int valid = remove(arg);
+        if (valid!=0){
+            printf("Operation Unsuccessful: %s\n",arg);
+        }
     }
 }
 
 void rmd(char arg[]){
-    rmdir(arg);
+    int valid = rmdir(arg);
+    if (valid!=0){
+        printf("Operation Unsuccessful: %s\n",arg);
+    }
 }
 
 void rm(char arg[]){
-    remove(arg);
+    int valid = remove(arg);
+    if (valid!=0){
+        printf("Operation Unsuccessful: %s\n",arg);
+    }
 }
 int main(int argc, char *argv[]){
     char * token = strtok(argv[1], " ");
     token=strtok(NULL, " ");
     char * flag=token;
     while(token!=NULL){
-        token=strtok(NULL, " ");
         if (token==NULL){
+            printf("Less arguments\n");
             continue;
         }
         if (strcmp(flag,"-d")==0){
-        rmd(token);
+            token=strtok(NULL, " ");
+            if (token==NULL){
+                continue;
+            }
+            rmd(token);
         }
         else if (strcmp(flag,"-i")==0){
-        rmi(token);
+            token=strtok(NULL, " ");
+            if (token==NULL){
+                continue;
+            }            
+            rmi(token);
         }
+       	else if (flag[0]=='-'){
+    		printf("Wrong Flag\n");
+            return 1;
+	    } 
         else{
-        rm(token);
+            token=strtok(NULL, " ");
+            if (token==NULL){
+                continue;
+            }
+            rm(token);
         }
     }
 }

@@ -36,12 +36,22 @@ int main(int argc, char *argv[]){
             continue;
         }
         if (mflag==1){
-            mkdirm(token, atoi(flag));
+            int mval = atoi(flag);
+            if (flag[0]!='0' && mval==0){
+                printf("Wrong mode");
+            }
+            else{
+                mkdirm(token, atoi(flag));
+            }
         }
         else if (strcmp(flag,"-v")==0){
             token=strtok(NULL, " ");
             mkdirv(token);
         }
+        else if (flag[0]=='-'){
+    		printf("Wrong Flag\n");
+            return 1;
+	    } 
         else{
             mkdircmd(token);
         }

@@ -11,17 +11,27 @@ int MAX_CHAR = 100;
 
 void cdP_cmd(){
 	char * token = strtok(NULL, " ");
+	if (token == NULL){
+	printf("No directory specified\n");
+	return;
+	}	
 	chdir(token);
 }
 
 void cdL_cmd(){
 	char * token = strtok(NULL, " ");
+	if (token == NULL){
+	printf("No directory specified\n");
+	return;
+	}
 	chdir(token);
 }
 
 void cd_cmd(){
 	char * token = strtok(NULL, " ");
+
 	if (token == NULL){
+	printf("No directory specified\n");
 	return;
 	}
 	if (strcmp(token,"-P")==0){
@@ -30,24 +40,31 @@ void cd_cmd(){
 	else if(strcmp(token,"-L")==0){
 		cdP_cmd();
 	}
+	else if (token[0]=='-'){
+		printf("Wrong Flag\n");
+	}
 	else{
-		char * token = strtok(NULL, " ");
 		chdir(token);
 	}
 }
 
 void echoN_cmd(){
 	char * token = strtok(NULL, " ");
+	if (token == NULL){
+	printf("No directory specified\n");
+	return;
+	}
 	printf("%s",token);
 }
 
 void echoHelp_cmd(){
-	printf("%s\n","Echo help");
+	printf("%s\n","Echo command is used to output the args in command line\n");
 }
 
 void echo_cmd(){
 	char * token = strtok(NULL, " ");
 	if (token == NULL){
+		printf("No directory specified\n");
 		return;
 	}
 	if (strcmp(token,"-n")==0){
@@ -55,6 +72,9 @@ void echo_cmd(){
 	}
 	else if(strcmp(token,"--help")==0){
 		echoHelp_cmd();
+	}
+	else if (token[0]=='-'){
+		printf("Wrong Flag\n");
 	}
 	else {
 		printf("%s\n",token);
@@ -89,8 +109,11 @@ void pwd_cmd(){
 	else if(strcmp(token,"-L")==0){
 		pwdL_cmd();
 	}
+	else if (token[0]=='-'){
+		printf("Wrong Flag\n");
+	}
 	else{
-		printf("Not Supported");
+		printf("Not Supported\n");
 	}
 }
 
@@ -109,12 +132,13 @@ int main(int argc, char *argv[])
 	char * original = malloc(sizeof(char)*MAX_CHAR);
 	char * token;
 	char cmdexit[]="exit";
-	char cmdcd[]="cd";
+	char cmdcd[]="cd"; 	
 	char cmdecho[]="echo";
 	char cmdpwd[]="pwd";
 
 	char cmdls[]="ls";
 	char cmdcat[]="cat";
+	char cmddate[]="date";
 	char cmdrm[]="rm";
 	char cmdmkdir[]="mkdir";
 	
@@ -155,10 +179,11 @@ int main(int argc, char *argv[])
 				token = strtok(NULL, " ");
 				arg2=token;
 				flag=1;
-				if (strcmp(arg,cmdt)==0){
+				if (arg!=NULL){
+ 					if (strcmp(arg,cmdt)==0){
 					flag=2;
 				}
-				
+				}
 			}
 			else if (strcmp(token,cmdcat)==0){
 				binaryPath="./cat";
@@ -170,6 +195,13 @@ int main(int argc, char *argv[])
 				if (strcmp(arg,cmdt)==0){
 					flag=2;
 				}
+			}
+			else if (strcmp(token,cmddate)==0){
+				binaryPath="./date";
+				token = strtok(NULL, " ");
+				arg=token;
+				flag=1;
+
 			}
 			else if (strcmp(token,cmdrm)==0){
 				binaryPath = "./remove";

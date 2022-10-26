@@ -94,6 +94,9 @@ int main(int argc, char *argv[]){
     else if (strcmp(argv[1],"-E")==0){
         catE(argv[2]);
     }
+	else if (argv[1][0]=='-'){
+		printf("Wrong Flag\n");
+	} 
     else{
         catcmd(argv[1]);
     }

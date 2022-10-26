@@ -1,3 +1,1 @@
-if (token == NULL){
-	return;
-	}
+NULL)
