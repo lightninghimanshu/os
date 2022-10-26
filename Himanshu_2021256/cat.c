@@ -10,21 +10,22 @@ int catn(char arg[])
 	ptr = fopen(arg, "r");
 
 	if (NULL == ptr) {
-		printf("file can't be opened \n");
+		printf("File error\n");
 	}
 
-	printf("content of this file are \n");
     int i =1;
     char *c = "\n"  ;
-	do {
+	while (ch != EOF){
 		ch = fgetc(ptr);
-		if (ch=='\n' || i==1){
-            printf("\n %d ",i);
-            i++;
-        }else{
-        printf("%c", ch);
-        }
-	} while (ch != EOF);
+		if (ch !=EOF){
+			if (ch=='\n' || i==1){
+				printf("\n %d ",i);
+				i++;
+			}else{
+			printf("%c", ch);
+			}
+		}
+	};
 	printf("\n");
 
 	fclose(ptr);
@@ -40,19 +41,21 @@ int catE(char arg[])
 	ptr = fopen(arg, "r");
 
 	if (NULL == ptr) {
-		printf("file can't be opened \n");
+		printf("File error\n");
 	}
 
-	printf("content of this file are \n");
     char *c = "\n"  ;
-	do {
+	 while (ch != EOF)
+	{
 		ch = fgetc(ptr);
+		if (ch !=EOF){
 		if (ch=='\n'){
             printf("%c%c",'$',ch);
         }else{
         printf("%c", ch);
         }
-	} while (ch != EOF);
+	}
+	}
 	printf("\n");
 
 
@@ -69,16 +72,17 @@ int catcmd(char arg[])
 	ptr = fopen(arg, "r");
 
 	if (NULL == ptr) {
-		printf("file can't be opened \n");
+		printf("File error\n");
 	}
 
-	printf("content of this file are \n");
 	char *c = "\n"  ;
-	do {
-		ch = fgetc(ptr);		
-	    printf("%c", ch);
-	} while (ch != EOF);
-	printf("\n");
+	while (ch != EOF){
+		ch = fgetc(ptr);
+		if (ch != EOF){
+			printf("%c", ch);
+			printf("\n");
+		}		
+	}
 	fclose(ptr);
 	return 0;
 }

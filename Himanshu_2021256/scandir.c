@@ -5,72 +5,69 @@
 #include <string.h>
 
 void lsa(char arg[]){
-    struct dirent **namelist;
+    struct dirent **list;
     int n;
     char dot='.';
     if (arg==NULL){
-        n = scandir(".", &namelist, NULL, alphasort);
+        n = scandir(".", &list, NULL, alphasort);
     }else{
-        n = scandir(arg, &namelist, NULL, alphasort);
+        n = scandir(arg, &list, NULL, alphasort);
     }
     if (n == -1) {
-        perror("scandir");
         exit(EXIT_FAILURE);
     }
     while (n--) {
-        printf("%s\n", (namelist[n]->d_name));
-        free(namelist[n]);
+        printf("%s\n", (list[n]->d_name));
+        free(list[n]);
 
     }
-    free(namelist);
+    free(list);
 
     exit(EXIT_SUCCESS);
 }
 void ls(char arg[]){
-    struct dirent **namelist;
+    struct dirent **list;
     int n;
     char dot='.';
     if (arg==NULL){
-        n = scandir(".", &namelist, NULL, alphasort);
+        n = scandir(".", &list, NULL, alphasort);
     }else{
-        n = scandir(arg, &namelist, NULL, alphasort);
+        n = scandir(arg, &list, NULL, alphasort);
     }    if (n == -1) {
-        perror("scandir");
         exit(EXIT_FAILURE);
     }
 
     while (n--) {
 
-        if((namelist[n]->d_name)[0]!=dot){
-            printf("%s\n", namelist[n]->d_name);
-            free(namelist[n]);
+        if((list[n]->d_name)[0]!=dot){
+            printf("%s\n", list[n]->d_name);
+            free(list[n]);
         }
     }
-    free(namelist);
+    free(list);
 
     exit(EXIT_SUCCESS);
 }
 
 void lsd(char arg[]){
-    struct dirent **namelist;
+    struct dirent **list;
     int n;
     char dot='.';
     if (arg==NULL){
-        n = scandir(".", &namelist, NULL, alphasort);
+        n = scandir(".", &list, NULL, alphasort);
     }else{
-        n = scandir(arg, &namelist, NULL, alphasort);
+        n = scandir(arg, &list, NULL, alphasort);
     }    if (n == -1) {
-        perror("scandir");
         exit(EXIT_FAILURE);
     }
     while (n--) {
         if (n==0){
-            printf("%s\n", namelist[n]->d_name);
-            free(namelist[n]);
+            printf("%s\n", list[n]->d_name);
+            free(list[n]);
         }
 
     }
-    free(namelist);
+    free(list);
 
     exit(EXIT_SUCCESS);
 }

@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <pthread.h>
-
+#include <limits.h>
 
 int MAX_CHAR = 100;
 
@@ -14,8 +14,10 @@ void cdP_cmd(){
 	if (token == NULL){
 	printf("No directory specified\n");
 	return;
-	}	
-	chdir(token);
+	}
+	char s[100];
+	realpath(token, s);	
+	chdir(s);
 }
 
 void cdL_cmd(){
@@ -147,7 +149,7 @@ int main(int argc, char *argv[])
 
 	char blank[]=" ";
 	while(mainflag==1){
-		printf("$");
+		printf("$ ");
 		fgets(command, MAX_CHAR, stdin);
 		// printf("!");
 		command[strcspn(command, "\n")] = 0;
@@ -155,7 +157,7 @@ int main(int argc, char *argv[])
 		char * token = strtok(command, " ");
 		if(strcmp(token,cmdexit)==0){
 			mainflag=0;
-			printf("bye");
+			printf("bye\n");
 		}
 		if(strcmp(token,cmdcd)==0){
 			cd_cmd(token);
@@ -192,15 +194,24 @@ int main(int argc, char *argv[])
 				token = strtok(NULL, " ");
 				arg2=token;
 				flag=1;
-				if (strcmp(arg,cmdt)==0){
+				if (arg!=NULL){
+ 					if (strcmp(arg,cmdt)==0){
 					flag=2;
+				}
 				}
 			}
 			else if (strcmp(token,cmddate)==0){
 				binaryPath="./date";
 				token = strtok(NULL, " ");
 				arg=token;
+				token = strtok(NULL, " ");
+				arg2=token;
 				flag=1;
+				if (arg!=NULL){
+ 					if (strcmp(arg,cmdt)==0){
+					flag=2;
+				}
+				}
 
 			}
 			else if (strcmp(token,cmdrm)==0){
@@ -220,10 +231,7 @@ int main(int argc, char *argv[])
 				if (strcmp(token,cmdt)==0){
 					flag=4;
 				}
-			}
-			else if (strcmp(token,cmdclear)==0){
-				system("clear");
-			}			
+			}	
 			if (flag==1){
 				int rc = fork();
 				if (rc < 0) { 
